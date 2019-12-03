@@ -18,6 +18,10 @@ $(OBJ_DIR)/%$(OBJ_EXT) : %$(CXX_EXT)
 	@-mkdir -p $(OBJ_DIR)
 	g++ $(INC) -c $< -o $@
 
+tt:
+	rm -rf test
+	g++ -o test testpress.cpp -ljson
+
 cc:
 	@echo
 	@echo "Removeing..."

@@ -7,9 +7,9 @@ void Register(int fd)
 	string name;
 	string pw;
 
-	cout << "-->  please input your name:  ";
+	cout << "please input your name:  ";
 	cin >> name;
-	cout << "--> please input your passwd:  ";
+	cout << "please input your passwd:  ";
 	cin >> pw;
 
 	Json::Value val;
@@ -43,9 +43,9 @@ void Login(int fd)
 	string name;
 	string pw;
 
-	cout << "-->  please input your name:  ";
+	cout << "please input your name:  ";
 	cin >> name;
-	cout << "--> please input your passwd:  ";
+	cout << "please input your passwd:  ";
 	cin >> pw;
 
 	Json::Value val;
@@ -86,13 +86,13 @@ void Login(int fd)
 		while (true)
 		{
 			cout << "<==  1.get list    2.talk to one    3.talk to group    4.exit  ==>" << endl;
-			cout << "====================================================================" << endl;
-			cout << "please input choice: ";
+			//cout << "====================================================================" << endl;
+			cout << "--> please input choice: ";
 			int choice;
 			cin >> choice;
 			if (choice < 0 || choice > 4)
 			{
-				cout << "input error, please reinput: ";
+				cout << "--> input error, please reinput: ";
 				continue;
 			}
 
