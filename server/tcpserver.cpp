@@ -7,13 +7,13 @@ void listen_cb(int fd, short event, void* arg)
 	socklen_t len = sizeof(caddr);
 
 	int clifd = accept(fd, (struct sockaddr*) & caddr, &len);
-
+	
 	if (-1 == clifd)
 	{
 		cout << "accept fail ==>> void listen_cb(int fd, short event, void* arg)" << endl;
 		return;
 	}
-
+	cout << "--> ip: " << inet_ntoa(caddr.sin_addr) << "  port: " << ntohs(caddr.sin_port) << "  connect success!" << endl;
 	//查找当前监听数量最少的子线程
 	int min = 65535;
 	int tmpfd = 0;
@@ -21,6 +21,7 @@ void listen_cb(int fd, short event, void* arg)
 	map<int, int>::iterator it = mythis->pth_work_num.begin();
 	for (; it != mythis->pth_work_num.end(); ++it)
 	{
+		//cout << "id: " << it->first << " num: " << it->second << endl;
 		if (it->second < min)
 		{
 			min = it->second;
@@ -33,7 +34,7 @@ void listen_cb(int fd, short event, void* arg)
 
 	if (write(tmpfd, buff, sizeof(buff)) > 0)
 	{
-		cout << "<== write success ==>" << endl;
+	//	cout << "<==  write success  ==>" << endl;
 	}
 	else
 	{
@@ -43,31 +44,29 @@ void listen_cb(int fd, short event, void* arg)
 
 void sock_pair_cb(int fd, short event, void* arg)
 {
-	cout << "=================================" << endl;
-	cout << "<==  in sock_pair_cb()  ==>" << endl;
+	//cout << "<=============================================>" << endl;
+	//cout << "<==  in sock_pair_cb()  ==>" << endl;
 
 	TcpServer* mythis = (TcpServer*)arg;
 	int num = 0;
-	char buff[10] = { 0 };
-	if (read(fd, buff, 9) > 0)
+	//char buff[10] = { 0 };
+	if (read(fd,(void *)&num, 4) > 0)
 	{
-		cout << "read success !" << endl;
+		//cout << "read success !" << endl;
 	}
 	else
 	{
 		cout << "read error ==>> void sock_pair_cb(int fd, short event, void* arg)" << endl;
 	}
 
-	num = atoi(buff);
+	//num = atoi(buff);
 	mythis->pth_work_num[fd] = num;
 
-	cout << "out sock_pair_cb()" << endl;
-	cout << "=================================" << endl;
+//	cout << "out sock_pair_cb()" << endl;
+	//cout << "<=============================================>" << endl;
 }
 
-
-
-TcpServer::TcpServer(char* ip, short port, int pthnum)
+TcpServer::TcpServer(const char* ip, short port, int pthnum)
 {
 	pth_num = pthnum;
 	listen_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -79,8 +78,8 @@ TcpServer::TcpServer(char* ip, short port, int pthnum)
 	struct sockaddr_in saddr;
 	saddr.sin_family = AF_INET;
 	saddr.sin_port = htons(port);
-	saddr.sin_addr.s_addr = inet_addr(p);
-	cout << "<==  saddr init success  ==>" << endl;
+	saddr.sin_addr.s_addr = inet_addr(ip);
+//	cout << "<==  saddr init success  ==>" << endl;
 
 	int res = bind(listen_fd, (struct sockaddr*) & saddr, sizeof(saddr));
 	if (res == -1)
@@ -101,7 +100,7 @@ TcpServer::TcpServer(char* ip, short port, int pthnum)
 	struct event* ev = event_new(base, listen_fd, EV_READ | EV_PERSIST, listen_cb, this);
 	if (ev != NULL)
 	{
-		cout << "<== event create success! ==>" << endl;
+	//	cout << "<==  event create success!  ==>" << endl;
 	}
 	else
 	{
@@ -109,7 +108,7 @@ TcpServer::TcpServer(char* ip, short port, int pthnum)
 	}
 
 	event_add(ev, NULL);
-	cout << "<== tcpsever listen cb already carry out ==>" << endl;
+//	cout << "<==  tcpsever listen cb already carry out  ==>" << endl;
 }
 
 TcpServer::~TcpServer()
@@ -118,8 +117,8 @@ TcpServer::~TcpServer()
 
 void TcpServer::Run()
 {
-	cout << "=============================================" << endl;
-	cout << "<==  in run  ==>" << endl;
+//	cout << "<=============================================>" << endl;
+	//cout << "<==  in run  ==>" << endl;
 
 	GetSockPair();
 	GetPthread();
@@ -137,7 +136,7 @@ void TcpServer::Run()
 		}
 	}
 
-	cout << "Run() for already carry out" << endl;
+	//cout << "Run() for already carry out" << endl;
 	event_base_dispatch(base);
 }
 
@@ -164,4 +163,5 @@ void TcpServer::GetPthread()
 	{
 		pthread.push_back(new Pthread(socket_pair[i].arr[1]));
 	}
+	cout << endl;
 }

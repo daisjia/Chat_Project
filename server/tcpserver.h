@@ -22,7 +22,7 @@ using namespace std;
 class TcpServer
 {
 public:
-	TcpServer(char *ip, short port, int pthnum);
+	TcpServer(const char *ip, short port, int pthnum);
 	
 	~TcpServer();
 	

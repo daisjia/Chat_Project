@@ -31,4 +31,4 @@ Mysql::~Mysql()
 	mysql_close(mpcon);
 }
 
-Mysql* Mysql_server = new Mysql();
+Mysql Mysql_server;

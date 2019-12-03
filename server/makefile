@@ -1,7 +1,7 @@
 INC += -I./
 LIB += -L /usr/lib/mysql -lmysqlclient -ljson -levent -lpthread
 OBJ_DIR = ./obj
-OBJ = $(OBJ_DIR)/main.o $(OBJ_DIR)/fun.o
+OBJ = $(OBJ_DIR)/main.o $(OBJ_DIR)/mypthread.o $(OBJ_DIR)/mysql.o $(OBJ_DIR)/tcpserver.o $(OBJ_DIR)/control.o
 OBJ_EXT = .o
 CXX_EXT = .cpp
 
